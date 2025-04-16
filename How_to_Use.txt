@@ -1,0 +1,78 @@
+Requirement: Python 3 must be installed on your Linux system
+
+Generate Sample Data (CSV File):
+
+Run the script python3 data_gen.py.
+
+The script will prompt you for:
+
+File Name: Specify the desired filename for the CSV file (e.g., /var/lib/pgsql/14/data/production_data.csv).
+
+File Size: Enter the desired size of the CSV file in bytes.
+
+The script will generate the CSV file in real-time, showing progress as data is created.
+
+Create a PostgreSQL Database:
+
+Log in to the PostgreSQL server as the postgres user:
+
+sudo -i -u postgres
+
+Start the psql command-line interface:Bash
+
+psql
+Create a new database named db_name using the following command:
+
+CREATE DATABASE db_name;
+Connect to the Database and Create a Table:
+
+Connect to the newly created database db_name:
+\c db_name
+Create a table named table_name with the desired columns in your database using a CREATE TABLE statement:
+
+CREATE TABLE table_name (
+    column1 text,
+    column2 text,
+    column3 text,
+    column4 text,
+    column5 text,
+    column6 text,
+    column7 text,
+    column8 text,
+    column9 text,
+    column10 text
+);
+Import Data from CSV File: Use the PostgreSQL COPY command to import data from the generated CSV file:
+
+
+COPY table_name (column1, column2, column3, column4, column5, column6, column7, column8, column9, column10)
+FROM '/var/lib/pgsql/14/data/production_data.csv'
+WITH (FORMAT csv, DELIMITER ',', HEADER);
+Verify Database Size:
+
+Check the size of your newly created database using the following SQL query:
+
+SELECT datname AS database_name, pg_size_pretty(pg_database_size(datname)) AS size
+FROM pg_database
+ORDER BY pg_database_size(datname) DESC;
+Limitations and Considerations:
+
+This script generates a temporary CSV file with the desired size.
+
+The generated CSV file needs to be placed in the PostgreSQL data directory (/var/lib/pgsql/14/data/).
+
+Important: After successfully copying the data to the database, delete the CSV file to avoid unnecessary disk usage.
+
+Be aware that the total disk space utilized for the database creation will be approximately three times the size specified
+
+1. Actual Database: The size of the stored data itself.
+
+2. Transaction Logs: Logs used for data consistency during operations.
+
+3. Data File (Temporary): The generated CSV file (to be deleted after use).
+
+Ensure sufficient disk space is available before running the script.
+
+Script take aprox 8 hours for generating 100GB of data file and COPY command take around 45-50 min to copy the same to table. So total elapse time is around 9 hours for 100Gb of data gen and upload.
+
+To optimize total time duration run same script in the chunks for data generation using different putty sessions. e.g for generating 50GB data use 5 different session with 10GB file generation. This way total time duration will be 5times less for data gen.
