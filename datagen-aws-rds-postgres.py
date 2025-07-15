@@ -8,7 +8,7 @@ import psycopg2.extensions
 from datetime import datetime
 
 # AWS RDS PostgreSQL connection details
-PG_HOST = "pg500db1-partition.c8ldg6pg7mmb.us-west-1.rds.amazonaws.com"
+PG_HOST = "db.c8ldg6pg7mmb.us-west-1.rds.amazonaws.com"
 PG_PORT = 5432
 PG_USER = "postgres"
 PG_PASSWORD = "postgres"
@@ -135,4 +135,3 @@ if __name__ == "__main__":
         print("\n🔗 Connecting to PostgreSQL...")
         create_database_and_table(dbname, table_name, filename)
         print("\n-------------------------------\n")
-
